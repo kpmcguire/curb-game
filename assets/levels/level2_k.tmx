@@ -53,7 +53,7 @@
  <objectgroup id="5" name="Doors" offsetx="0.333333" offsety="74.6667">
   <object id="3" name="door" x="5580" y="2455">
    <properties>
-    <property name="to" value="level1 _k"/>
+    <property name="to" value="Level1_K"/>
    </properties>
    <point/>
   </object>

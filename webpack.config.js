@@ -39,6 +39,7 @@ module.exports = {
         })
     ],
     module: {
+
         rules: [
             // BABEL
             {
@@ -89,10 +90,20 @@ module.exports = {
 
             // IMAGES
             {
-                test: /\.(jpe?g|png|gif)$/,
+                test: /\.(jpe?g|png|gif|mp3)$/,
                 loader: 'file-loader',
                 options: {
                     name: '[path][name].[ext]'
+                }
+            },
+            {
+                test: /\.json$/,
+                loader: 'file-loader',
+                type: 'javascript/auto',
+                options: {
+                    name() {
+                        return '[path][name].[ext]';
+                    },
                 }
             }
         ]

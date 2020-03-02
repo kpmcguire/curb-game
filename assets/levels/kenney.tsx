@@ -11,6 +11,11 @@
    <property name="type" value="FULL"/>
   </properties>
  </tile>
+ <tile id="4">
+  <properties>
+   <property name="type" value="FULL"/>
+  </properties>
+ </tile>
  <tile id="8">
   <properties>
    <property name="type" value="FULL"/>
@@ -79,6 +84,11 @@
  <tile id="83">
   <properties>
    <property name="type" value="HALF_BOTTOM_LEFT"/>
+  </properties>
+ </tile>
+ <tile id="123">
+  <properties>
+   <property name="type" value="FULL"/>
   </properties>
  </tile>
 </tileset>

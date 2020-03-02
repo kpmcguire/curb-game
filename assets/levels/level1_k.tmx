@@ -45,15 +45,15 @@
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 </data>
  </layer>
- <objectgroup id="2" name="Player" visible="0">
-  <object id="1" name="fox" x="442.667" y="4986.67">
+ <objectgroup id="2" name="Player">
+  <object id="1" name="fox" x="11584.7" y="2687.67">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Doors" offsetx="0.333333" offsety="74.6667">
-  <object id="3" name="door" x="11944" y="3883">
+ <objectgroup id="5" name="Doors" offsetx="0.333333" offsety="0">
+  <object id="3" name="door" x="11972.5" y="3967.5">
    <properties>
-    <property name="to" value="level2_k"/>
+    <property name="to" value="Level2_K"/>
    </properties>
    <point/>
   </object>

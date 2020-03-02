@@ -6,23 +6,23 @@ export default class Player extends Phaser.Sprite {
 		//game object level variables
 		this.speed = 400;
 		this.airSpeed = 300;
-		this.jumpPower = 1200;
+		this.jumpPower = 600;
 		this.inAir = true;
 		this.hitGround = false;
 		this.game = game
 
 		//animations
 		this.animations.add("idle", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
-		this.animations.add("jump", [0,2]);
+		this.animations.add("jump", [2, 2]);
 		this.landAnimation = this.animations.add("land", [6, 0]);
 		this.animations.add("run", [3,5]);
-		this.animations.add("fire", [0, 6]);
+		this.animations.add("fire", [6, 6, 6, 6, 6, 6]);
 
 		this.game.physics.enable(this, Phaser.Physics.ARCADE);
 		this.body.collideWorldBounds = true;
 		this.body.drag = { x: 600, y: 0 };
 
-		// this.body.setSize(100, 210, 80, 0);
+		this.body.setSize(80, 230, 35, 0);
 
 		this.body.tilePadding.x = 100;
 		this.body.tilePadding.y = 100;
@@ -36,21 +36,19 @@ export default class Player extends Phaser.Sprite {
 		this.bulletGate = 0;
 		this.bullets = bullets;
 		this.shotInterval = 500;
-		this.fireposition = { x: 0, y: -100 };
+		this.fireposition = { x: 50, y: -180 };
 
 
 	  this.fireButton = this.game.input.keyboard.addKey(
 			Phaser.Keyboard.Z
 		);
 
-		this.animations.play("idle", 9, true);
+		this.animations.play("idle", 1, true);
 
 		this.flashEffect = this.game.add.tween(this)
 									.to( { alpha: 0 }, 50, Phaser.Easing.Bounce.Out)
 									.to( { alpha: .8 }, 50, Phaser.Easing.Bounce.Out)
 									.to( { alpha: 1 }, 150, Phaser.Easing.Circular.Out);
-
-
 		this.game.input.gamepad.start();
 
 		// To listen to buttons from a specific pad listen directly on that pad game.input.gamepad.padX, where X = pad 1-4
@@ -59,16 +57,30 @@ export default class Player extends Phaser.Sprite {
 	}		
 
 	animationState() {
-
-		if(this.hitGround) {
-			this.animations.play("land", 15);
-		} else if(!this.inAir && !this.landAnimation.isPlaying) {
-			if(Math.abs(this.body.velocity.x) > 4) {
-				this.animations.play("run", 9, true);
-			} else if( this.body.onFloor() ) {
-				this.animations.play("idle", 9, true);
-			}
+		if (this.body.onFloor()) {
+			if(this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) {
+				this.animations.play("fire", 1, false);
+			} else if (this.body.velocity.x > 4 || this.body.velocity.x < -4) {
+				this.animations.play("run", 2, true);
+			} else {
+				this.animations.play("idle", 20, true);
+			}	
+		} else {
+				if(this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) {
+					this.animations.play("fire", 1, false);
+				} else  {
+					this.animations.play("jump", 1);
+				}
 		}
+		// if(this.hitGround) {
+		// 	this.animations.play("land", 15);
+		// } else if(!this.inAir && !this.landAnimation.isPlaying) {
+		// 	if(Math.abs(this.body.velocity.x) > 4) {
+		// 		this.animations.play("run", 2, true);
+		// 	} else if( this.body.onFloor() ) {
+		// 		this.animations.play("idle", 20, true);
+		// 	}
+		// }
 	}
 
 	update() {
@@ -79,8 +91,6 @@ export default class Player extends Phaser.Sprite {
 		if(this.inAir != wasAir && this.body.velocity > 0) {
 			this.hitGround = true;
 		}
-
-
 
 		this.animationState();
 
@@ -118,12 +128,10 @@ export default class Player extends Phaser.Sprite {
 	jump() {
 		if(this.body.onFloor() == true) {
 			this.body.velocity.y = -this.jumpPower;
-			this.animations.play("jump", 30);
 			this.doubleJump = true;
 		} else if(this.doubleJump == true) {
 			this.doubleJump = false;
 			this.body.velocity.y = -this.jumpPower;
-			this.animations.play("jump", 30);
 		}
 	}
 
@@ -134,8 +142,9 @@ export default class Player extends Phaser.Sprite {
 	}
 
 	fire() {
-
 		if(this.game.time.now > this.bulletGate) {
+
+
 
 			var bullet = this.bullets.getFirstDead();
 			if(bullet) {
@@ -150,10 +159,7 @@ export default class Player extends Phaser.Sprite {
 				bullet.body.allowGravity = false
 
 			}
-
 			bullet.body.velocity.x = this.scale.x * 2668;
-			this.animations.play("fire", 9, true);
-
 			this.bulletGate = this.game.time.now + this.shotInterval;
 			
 		}

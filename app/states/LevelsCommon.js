@@ -35,7 +35,7 @@ export default class LevelsCommon extends Phaser.State {
     //walkable tiles
     this.map.addTilesetImage('kenney', 'kenney');
     this.layer = this.map.createLayer('collision');
-    this.map.setCollisionBetween(0,72,true,this.layer);
+    this.map.setCollisionBetween(0,124,true,this.layer);
     this.game.slopes.convertTilemapLayer(this.layer, 'arcadeslopes', 0)
     // added to improve performance - see http://thebotanistgame.com/blog/2015/03/04/tuning-phaserjs-performance.html
     // this.layer.renderSettings.enableScrollDelta = false;
@@ -58,16 +58,12 @@ export default class LevelsCommon extends Phaser.State {
     // this.map.createFromObjects("Collectables", 'coin', 'coin', null, true, false, this.coins);
     // this.coins.setAll("body.gravity", 0);
 
-    // //place doors
-    // this.doors = this.add.group();
-    // this.doors.physicsBodyType = Phaser.Physics.ARCADE;
-    // this.doors.enableBody = true;
-    // this.map.createFromObjects("Doors", 'door', 'sign', null, true, false, this.doors);
-    // this.doors.setAll("body.gravity", 0);
-
-    // this.doors.forEach((door)=>{
-    //   console.log(door[0].value)
-    // })
+    //place doors
+    this.doors = this.add.group();
+    this.doors.physicsBodyType = Phaser.Physics.ARCADE;
+    this.doors.enableBody = true;
+    this.map.createFromObjects("Doors", 'door', 'sign', null, true, false, this.doors);
+    this.doors.setAll("body.gravity", 0);
 
     this.bullets = this.add.group();
 
@@ -125,11 +121,6 @@ export default class LevelsCommon extends Phaser.State {
       // this.physics.ninja.gravity = 2
 
       this.game.slopes.enable(this.player)
-
-
-
-
-
   }
 
   update() {
@@ -177,8 +168,9 @@ export default class LevelsCommon extends Phaser.State {
   }
 
   hitDoor(playerRef, doorRef) {
+    console.log(doorRef.to)
     this.game.state.clearCurrentState();
-    this.game.state.start(doorRef[0].value);
+    this.game.state.start(doorRef.to);
   }
 
   hitEnemy(playerRef, enemyRef) {	

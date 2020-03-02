@@ -18,7 +18,7 @@ export default class CurbIntro extends Phaser.State {
 			this.game.state.start("Level1_K");
 		}
 
-		this.game.time.events.add(Phaser.Timer.SECOND * 8, gameFunc, this);
+		this.game.time.events.add(Phaser.Timer.SECOND * 7.5, gameFunc, this);
 
 		
 		
