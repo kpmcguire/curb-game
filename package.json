@@ -14,7 +14,10 @@
     "url": "https://cvgellhorn@github.com/cvgellhorn/webpack-boilerplate.git"
   },
   "dependencies": {
-    "lodash": "4.17.15"
+    "expose-loader": "^0.7.5",
+    "lodash": "4.17.15",
+    "phaser-arcade-slopes": "^0.3.1",
+    "phaser-ce": "^2.10.1"
   },
   "devDependencies": {
     "@babel/core": "7.7.5",

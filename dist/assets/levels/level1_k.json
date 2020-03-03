@@ -38,6 +38,41 @@
         }, 
         {
          "draworder":"topdown",
+         "id":6,
+         "name":"Enemies",
+         "objects":[
+                {
+                 "height":0,
+                 "id":8,
+                 "name":"mouse",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":10444,
+                 "y":2680
+                }, 
+                {
+                 "height":0,
+                 "id":9,
+                 "name":"mouse",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":11720,
+                 "y":3429.33333333333
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":5,
          "name":"Doors",
          "objects":[
@@ -69,8 +104,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":4,
+ "nextlayerid":7,
+ "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

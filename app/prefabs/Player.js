@@ -4,9 +4,9 @@ export default class Player extends Phaser.Sprite {
 		super(game, x, y, 'player');
 
 		//game object level variables
-		this.speed = 600;
-		this.airSpeed = 500;
-		this.jumpPower = 600;
+		this.speed = 400;
+		this.airSpeed = 300;
+		this.jumpPower = 700;
 		this.inAir = true;
 		this.hitGround = false;
 		this.game = game
@@ -138,7 +138,6 @@ export default class Player extends Phaser.Sprite {
 
 		// this.body.slopes = null; // TODO: Fix Phaser.Util.Mixin or use something else
 		// this.game.slopes.enable(this);
-		console.log(this.doubleJump)
 	}
 
 	jump() {
