@@ -46,12 +46,12 @@
 </data>
  </layer>
  <objectgroup id="2" name="Player">
-  <object id="1" name="fox" x="558.667" y="4826.67">
+  <object id="1" name="fox" x="556.667" y="4858.67">
    <point/>
   </object>
  </objectgroup>
  <objectgroup id="5" name="Doors" offsetx="0.333333" offsety="74.6667">
-  <object id="3" name="door" x="5580" y="2455">
+  <object id="3" name="door" x="5577" y="2482">
    <properties>
     <property name="to" value="Level1_K"/>
    </properties>

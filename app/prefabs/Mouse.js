@@ -19,40 +19,40 @@ export default class Mouse extends Phaser.Sprite {
 		this.game.physics.enable(this, Phaser.Physics.ARCADE);
 		this.body.collideWorldBounds = true;
 		this.body.drag = { x: 600, y: 0 };
-		this.body.setSize(60, 100, 45, 60);
+		// this.body.setSize(60, 100, 45, 60);
 		this.anchor.setTo(.5, 1);
 
-		this.animations.play("run", 9, true);
+		// this.animations.play("run", 9, true);
 	}		
 
-	update() {
+	// update() {
 
-		var dist = Phaser.Math.distance(this.x, this.y, this.player.x, this.player.y);
+	// 	var dist = Phaser.Math.distance(this.x, this.y, this.player.x, this.player.y);
 
-		if( Math.round(dist) < 210 ) {
-			this.animations.play("swing", 9);
+	// 	if( Math.round(dist) < 210 ) {
+	// 		this.animations.play("swing", 9);
 
-			if(this.x < this.player.x) {
-				this.scale.x = 1;
-			} else {
-				this.scale.x = -1;
-			}			
-		}
+	// 		if(this.x < this.player.x) {
+	// 			this.scale.x = 1;
+	// 		} else {
+	// 			this.scale.x = -1;
+	// 		}			
+	// 	}
 
-		if(!this.swingAnimation.isPlaying) {
+	// 	if(!this.swingAnimation.isPlaying) {
 
-			this.currentStep++;
-			this.body.velocity.x = this.speed;
+	// 		this.currentStep++;
+	// 		this.body.velocity.x = this.speed;
 
-			this.animations.play("run", 9, true);
+	// 		this.animations.play("run", 9, true);
 
-			this.scale.x = (this.speed > 0) ? 1 : -1;
+	// 		this.scale.x = (this.speed > 0) ? 1 : -1;
 
-			if(this.currentStep >= this.stepLimit) {
-				this.speed *= -1;
-				this.currentStep = 0;
-			}
-		}
+	// 		if(this.currentStep >= this.stepLimit) {
+	// 			this.speed *= -1;
+	// 			this.currentStep = 0;
+	// 		}
+	// 	}
 
-	}
+	// }
 }

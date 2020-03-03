@@ -1,7 +1,7 @@
 //require other components
 import Player from "../prefabs/Player.js";
 import Mouse from "../prefabs/Mouse.js";
-import NumberBox from "../prefabs/NumberBox.js";
+// import NumberBox from "../prefabs/NumberBox.js";
 
 export default class LevelsCommon extends Phaser.State {
   constructor(name) {
@@ -21,6 +21,7 @@ export default class LevelsCommon extends Phaser.State {
     this.physics.startSystem(Phaser.Physics.ARCADE);
     this.physics.arcade.gravity.y = 800;
     this.physics.arcade.TILE_BIAS = 40;
+    this.game.slopes.preferY = true;
 
     //map start
 
@@ -77,12 +78,16 @@ export default class LevelsCommon extends Phaser.State {
     this.player.bullets = this.bullets;
 
 
-    //place enemies
-    // this.enemies = this.add.group();
-    // this.map.createFromObjects("Enemies", 'mouse', null, null, true, false, this.enemies, Mouse);
-    // this.enemies.setAll("player", this.player);
-    // this.enemies.scale.x = 0.75;
-    // this.enemies.scale.y = 0.75;
+    // place enemies
+    this.enemies = this.add.group();
+    this.map.createFromObjects("Enemies", 'mouse', null, null, true, false, this.enemies, Mouse);
+
+    this.game.slopes.enable(this.enemies)
+
+    // console.log(this.enemies)
+    this.enemies.setAll("player", this.player);
+    this.enemies.scale.x = 1;
+    this.enemies.scale.y = 1;
 
     //UI
     // this.UIGroup = this.add.group();
@@ -132,7 +137,7 @@ export default class LevelsCommon extends Phaser.State {
     this.physics.arcade.collide(this.player, this.layer);
 
   	this.physics.arcade.collide(this.enemies, this.layer);
-  	this.physics.arcade.overlap(this.player, this.coins, this.collectCoin, null, this);
+  	// this.physics.arcade.overlap(this.player, this.coins, this.collectCoin, null, this);
     this.physics.arcade.overlap(this.player, this.doors, this.hitDoor, null, this);
     this.physics.arcade.collide(this.player, this.enemies, this.hitEnemy, null, this);
     
@@ -168,7 +173,6 @@ export default class LevelsCommon extends Phaser.State {
   }
 
   hitDoor(playerRef, doorRef) {
-    console.log(doorRef.to)
     this.game.state.clearCurrentState();
     this.game.state.start(doorRef.to);
   }
@@ -176,11 +180,7 @@ export default class LevelsCommon extends Phaser.State {
   hitEnemy(playerRef, enemyRef) {	
   	if(!playerRef.flashEffect.isRunning) {
   		playerRef.flash();
-      this.sfx.play("hit");
-	  	if(this.game.score > 0) {
-	  		this.game.score --;
-	  		this.scoreField.setValue(this.game.score);
-	  	}
+      // this.sfx.play("hit");
   	}
   }
 

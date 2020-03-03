@@ -4,12 +4,13 @@ export default class Player extends Phaser.Sprite {
 		super(game, x, y, 'player');
 
 		//game object level variables
-		this.speed = 400;
-		this.airSpeed = 300;
+		this.speed = 600;
+		this.airSpeed = 500;
 		this.jumpPower = 600;
 		this.inAir = true;
 		this.hitGround = false;
 		this.game = game
+		this.doubleJump = false
 
 		//animations
 		this.animations.add("idle", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
@@ -49,12 +50,19 @@ export default class Player extends Phaser.Sprite {
 									.to( { alpha: 0 }, 50, Phaser.Easing.Bounce.Out)
 									.to( { alpha: .8 }, 50, Phaser.Easing.Bounce.Out)
 									.to( { alpha: 1 }, 150, Phaser.Easing.Circular.Out);
+
+
+
 		this.game.input.gamepad.start();
 
 		// To listen to buttons from a specific pad listen directly on that pad game.input.gamepad.padX, where X = pad 1-4
 		this.pad1 = this.game.input.gamepad.pad1;
 
+
+
 	}		
+
+
 
 	animationState() {
 		if (this.body.onFloor()) {
@@ -96,9 +104,7 @@ export default class Player extends Phaser.Sprite {
 
 		this.speedToUse = this.inAir ? this.airSpeed : this.speed;
 
-		if (
-            this.cursors.left.isDown ||
-            this.pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_LEFT)
+		if ( this.cursors.left.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_LEFT)
         ) {
             this.scale.x = -1;
 						this.body.velocity.x = -this.speedToUse;
@@ -115,14 +121,24 @@ export default class Player extends Phaser.Sprite {
 			this.fire();
 		}
 
-		if(this.jumpButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_B)) {
+		if(this.pad1.isDown(Phaser.Gamepad.XBOX360_B)) {
 			this.jump();
 			// this.body.moveUp(this.speedToUse)
 		}
 
+		this.jumpButton.onDown.add(this.jump, this);
+
+
+
+
+
+
+
+
+
 		// this.body.slopes = null; // TODO: Fix Phaser.Util.Mixin or use something else
 		// this.game.slopes.enable(this);
-
+		console.log(this.doubleJump)
 	}
 
 	jump() {
