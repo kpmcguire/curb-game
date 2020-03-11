@@ -11,23 +11,23 @@ export default class Player extends Phaser.Sprite {
 		this.hitGround = false;
 		this.game = game
 		this.doubleJump = false
+	
 
 		//animations
 		this.animations.add("idle", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
-		this.animations.add("jump", [2, 2]);
+		this.animations.add("jump", [7, 7]);
 		this.landAnimation = this.animations.add("land", [6, 0]);
-		this.animations.add("run", [3,5]);
-		this.animations.add("fire", [6, 6, 6, 6, 6, 6]);
+		this.animations.add("run", [2,3,4,5,4,3]);
+		this.animations.add("fire", [8,8,8,8,8,8,8,8,8,8,8,8]);
 
 		this.game.physics.enable(this, Phaser.Physics.ARCADE);
 		this.body.collideWorldBounds = true;
 		this.body.drag = { x: 600, y: 0 };
 
-		this.body.setSize(80, 230, 35, 0);
+		this.body.setSize(150, 475, 100, -10);
 
-		this.body.tilePadding.x = 100;
-		this.body.tilePadding.y = 100;
-
+		this.body.tilePadding.x = 0;
+		this.body.tilePadding.y = 0;
 
 		this.anchor.set(.5, 1);
 		this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -53,30 +53,26 @@ export default class Player extends Phaser.Sprite {
 
 
 
+
 		this.game.input.gamepad.start();
 
 		// To listen to buttons from a specific pad listen directly on that pad game.input.gamepad.padX, where X = pad 1-4
 		this.pad1 = this.game.input.gamepad.pad1;
-
-
-
 	}		
 
-
-
 	animationState() {
-		if (this.body.onFloor()) {
+		if (this.body.touching.down) {
 			if(this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) {
 				this.animations.play("fire", 1, false);
-			} else if (this.body.velocity.x > 4 || this.body.velocity.x < -4) {
-				this.animations.play("run", 2, true);
+			} else if (this.body.velocity.x > 14 || this.body.velocity.x < -14) {
+				this.animations.play("run", 8, true);
 			} else {
-				this.animations.play("idle", 20, true);
+				this.animations.play("idle", 10, true);
 			}	
 		} else {
 				if(this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) {
 					this.animations.play("fire", 1, false);
-				} else  {
+				} else {
 					this.animations.play("jump", 1);
 				}
 		}
@@ -106,13 +102,13 @@ export default class Player extends Phaser.Sprite {
 
 		if ( this.cursors.left.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_LEFT)
         ) {
-            this.scale.x = -1;
+            this.scale.x = this.game.scaleFactor * -1;
 						this.body.velocity.x = -this.speedToUse;
 						// this.body.moveLeft(this.speedToUse)
         }
 
 		if(this.cursors.right.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_RIGHT)) {
-			this.scale.x = 1;
+			this.scale.x = this.game.scaleFactor;
 			this.body.velocity.x = this.speedToUse;
 			// this.body.moveRight(this.speedToUse)
 		}
@@ -128,20 +124,10 @@ export default class Player extends Phaser.Sprite {
 
 		this.jumpButton.onDown.add(this.jump, this);
 
-
-
-
-
-
-
-
-
-		// this.body.slopes = null; // TODO: Fix Phaser.Util.Mixin or use something else
-		// this.game.slopes.enable(this);
 	}
 
 	jump() {
-		if(this.body.onFloor() == true) {
+		if(this.body.touching.down == true) {
 			this.body.velocity.y = -this.jumpPower;
 			this.doubleJump = true;
 		} else if(this.doubleJump == true) {

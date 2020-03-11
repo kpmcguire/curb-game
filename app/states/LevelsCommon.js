@@ -22,6 +22,8 @@ export default class LevelsCommon extends Phaser.State {
     this.physics.arcade.gravity.y = 800;
     this.physics.arcade.TILE_BIAS = 40;
     this.game.slopes.preferY = true;
+    this.game.scaleFactor = 0.5
+
 
     //map start
 
@@ -73,10 +75,9 @@ export default class LevelsCommon extends Phaser.State {
     this.map.createFromObjects("Player", 'fox', null, null, true, false, this.world, Player);
     this.player = this.world.getTop();
 
-    this.player.scale.x = 1;
-    this.player.scale.y = 1;
+    this.player.scale.x = this.game.scaleFactor;
+    this.player.scale.y = this.game.scaleFactor;
     this.player.bullets = this.bullets;
-
 
     // place enemies
     this.enemies = this.add.group();
@@ -126,6 +127,14 @@ export default class LevelsCommon extends Phaser.State {
       // this.physics.ninja.gravity = 2
 
       this.game.slopes.enable(this.player)
+      this.player.body.slopes.preferY = true;
+
+      this.player.body.drag.x = 1200;
+      this.player.body.bounce.x = 0;
+      this.player.body.bounce.y = 0;
+      this.player.body.slopes.friction.x = 0;
+      this.player.body.slopes.friction.y = 0; 
+
   }
 
   update() {
@@ -149,6 +158,7 @@ export default class LevelsCommon extends Phaser.State {
         this.debugGate = this.game.time.now + 500
       }
     }
+
   }
 
   render() {

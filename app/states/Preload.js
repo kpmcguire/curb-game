@@ -39,7 +39,7 @@ export default class Preload {
     this.load.setPreloadSprite(this.asset);
 
     //do all your loading here
-    this.load.spritesheet('player', larry, 150, 230);
+    this.load.spritesheet('player', larry, 350, 475);
     this.load.spritesheet('mouse', mouse, 165, 160);
     this.load.image('gamebg', gamebg);
     this.load.tilemap('level1_k', level1_k, null, Phaser.Tilemap.TILED_JSON);
