@@ -14,11 +14,15 @@ export default class Player extends Phaser.Sprite {
 	
 
 		//animations
-		this.animations.add("idle", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
-		this.animations.add("jump", [7, 7]);
+		this.animations.add("idle", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,1]);
+		this.animations.add("jump", [6]);
 		this.landAnimation = this.animations.add("land", [6, 0]);
 		this.animations.add("run", [2,3,4,5,4,3]);
-		this.animations.add("fire", [8,8,8,8,8,8,8,8,8,8,8,8]);
+		this.animations.add("fire", [8])
+		this.animations.add("fireAir", [7])
+		this.animations.add("fireRun", [9,10,11,12,11,10])
+
+
 
 		this.game.physics.enable(this, Phaser.Physics.ARCADE);
 		this.body.collideWorldBounds = true;
@@ -62,16 +66,18 @@ export default class Player extends Phaser.Sprite {
 
 	animationState() {
 		if (this.body.touching.down) {
-			if(this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) {
-				this.animations.play("fire", 1, false);
+			if((this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) && (this.body.velocity.x > 14 || this.body.velocity.x < -14)) {
+				this.animations.play("fireRun", 8, true);
+			} else if ((this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) && this.body.velocity.x == 0){
+				this.animations.play("fire", 1);
 			} else if (this.body.velocity.x > 14 || this.body.velocity.x < -14) {
 				this.animations.play("run", 8, true);
 			} else {
 				this.animations.play("idle", 10, true);
 			}	
 		} else {
-				if(this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) {
-					this.animations.play("fire", 1, false);
+				if ((this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) && !this.body.touching.down){
+					this.animations.play("fireAir", 1);
 				} else {
 					this.animations.play("jump", 1);
 				}
