@@ -4,14 +4,14 @@ export default class Player extends Phaser.Sprite {
 		super(game, x, y, 'player');
 
 		//game object level variables
-		this.speed = 400;
-		this.airSpeed = 300;
-		this.jumpPower = 700;
+		this.speed = 600;
+		this.airSpeed = 500;
+		this.jumpPower = 800;
+		this.bulletSpeed = 5000
 		this.inAir = true;
 		this.hitGround = false;
 		this.game = game
-		this.doubleJump = false
-	
+		this.canJump = false
 
 		//animations
 		this.animations.add("idle", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,1]);
@@ -22,11 +22,9 @@ export default class Player extends Phaser.Sprite {
 		this.animations.add("fireAir", [7])
 		this.animations.add("fireRun", [9,10,11,12,11,10])
 
-
-
 		this.game.physics.enable(this, Phaser.Physics.ARCADE);
 		this.body.collideWorldBounds = true;
-		this.body.drag = { x: 600, y: 0 };
+		this.body.drag = { x: 2000, y: 0 };
 
 		this.body.setSize(150, 475, 100, -10);
 
@@ -34,6 +32,7 @@ export default class Player extends Phaser.Sprite {
 		this.body.tilePadding.y = 0;
 
 		this.anchor.set(.5, 1);
+
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 		this.jumpButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		// this.jumpButton.onDown.add(this.jump, this);
@@ -42,7 +41,6 @@ export default class Player extends Phaser.Sprite {
 		this.bullets = bullets;
 		this.shotInterval = 500;
 		this.fireposition = { x: 50, y: -180 };
-
 
 	  this.fireButton = this.game.input.keyboard.addKey(
 			Phaser.Keyboard.Z
@@ -56,27 +54,26 @@ export default class Player extends Phaser.Sprite {
 									.to( { alpha: 1 }, 150, Phaser.Easing.Circular.Out);
 
 
-
-
 		this.game.input.gamepad.start();
 
 		// To listen to buttons from a specific pad listen directly on that pad game.input.gamepad.padX, where X = pad 1-4
 		this.pad1 = this.game.input.gamepad.pad1;
 	}		
 
+
 	animationState() {
 		if (this.body.touching.down) {
-			if((this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) && (this.body.velocity.x > 14 || this.body.velocity.x < -14)) {
+			if((this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_X)) && (this.body.velocity.x > 14 || this.body.velocity.x < -14)) {
 				this.animations.play("fireRun", 8, true);
-			} else if ((this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) && this.body.velocity.x == 0){
+			} else if ((this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_X)) && this.body.velocity.x == 0){
 				this.animations.play("fire", 1);
-			} else if (this.body.velocity.x > 14 || this.body.velocity.x < -14) {
+			} else if (this.body.velocity.x > 20 || this.body.velocity.x < -20) {
 				this.animations.play("run", 8, true);
 			} else {
 				this.animations.play("idle", 10, true);
 			}	
 		} else {
-				if ((this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) && !this.body.touching.down){
+				if ((this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_X)) && !this.body.touching.down){
 					this.animations.play("fireAir", 1);
 				} else {
 					this.animations.play("jump", 1);
@@ -91,6 +88,7 @@ export default class Player extends Phaser.Sprite {
 		// 		this.animations.play("idle", 20, true);
 		// 	}
 		// }
+
 	}
 
 	update() {
@@ -119,27 +117,34 @@ export default class Player extends Phaser.Sprite {
 			// this.body.moveRight(this.speedToUse)
 		}
 
-		if(this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_A)) {
+		if(this.fireButton.isDown || this.pad1.isDown(Phaser.Gamepad.XBOX360_X)) {
 			this.fire();
-		}
-
-		if(this.pad1.isDown(Phaser.Gamepad.XBOX360_B)) {
-			this.jump();
-			// this.body.moveUp(this.speedToUse)
 		}
 
 		this.jumpButton.onDown.add(this.jump, this);
 
+
+		if(this.pad1.justPressed(Phaser.Gamepad.XBOX360_A)) {
+			this.jump();
+		}
+			
+		// 	// this.body.moveUp(this.speedToUse)
+		// }
+
+
+		if(this.body.touching.down == true) {
+			setTimeout(()=>{
+				this.canJump = true
+			}, 250)
+		}
+
 	}
 
 	jump() {
-		if(this.body.touching.down == true) {
-			this.body.velocity.y = -this.jumpPower;
-			this.doubleJump = true;
-		} else if(this.doubleJump == true) {
-			this.doubleJump = false;
-			this.body.velocity.y = -this.jumpPower;
-		}
+			if (this.canJump === true) {
+				this.canJump = false
+				this.body.velocity.y = -this.jumpPower;
+			}
 	}
 
 	flash() {
@@ -166,9 +171,8 @@ export default class Player extends Phaser.Sprite {
 				bullet.body.allowGravity = false
 
 			}
-			bullet.body.velocity.x = this.scale.x * 2668;
+			bullet.body.velocity.x = this.scale.x * this.bulletSpeed;
 			this.bulletGate = this.game.time.now + this.shotInterval;
-			
 		}
 	}	
 

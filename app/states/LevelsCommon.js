@@ -1,6 +1,7 @@
 //require other components
 import Player from "../prefabs/Player.js";
 import Mouse from "../prefabs/Mouse.js";
+
 // import NumberBox from "../prefabs/NumberBox.js";
 
 export default class LevelsCommon extends Phaser.State {
@@ -19,7 +20,7 @@ export default class LevelsCommon extends Phaser.State {
     // this.physics.startSystem(Phaser.Physics.NINJA);
 
     this.physics.startSystem(Phaser.Physics.ARCADE);
-    this.physics.arcade.gravity.y = 800;
+    this.physics.arcade.gravity.y = 1200;
     this.physics.arcade.TILE_BIAS = 40;
     this.game.slopes.preferY = true;
     this.game.scaleFactor = 0.5
@@ -45,6 +46,8 @@ export default class LevelsCommon extends Phaser.State {
 
     //collision
     this.layer.resizeWorld();
+
+
 
     // let slopeMap = [1,1,3]
 
@@ -77,18 +80,25 @@ export default class LevelsCommon extends Phaser.State {
 
     this.player.scale.x = this.game.scaleFactor;
     this.player.scale.y = this.game.scaleFactor;
+    this.player.y += this.player.body.height;
     this.player.bullets = this.bullets;
+
 
     // place enemies
     this.enemies = this.add.group();
     this.map.createFromObjects("Enemies", 'mouse', null, null, true, false, this.enemies, Mouse);
 
-    this.game.slopes.enable(this.enemies)
+    if (this.enemies.children.length > 0) {
+      this.game.slopes.enable(this.enemies)
+      this.enemies.setAll("player", this.player);
+      this.enemies.scale.x = 1;
+      this.enemies.scale.y = 1;
+    }
 
-    // console.log(this.enemies)
-    this.enemies.setAll("player", this.player);
-    this.enemies.scale.x = 1;
-    this.enemies.scale.y = 1;
+    this.enemies.children.forEach(function(item){
+
+      item.position.y += item.body.height
+    })
 
     //UI
     // this.UIGroup = this.add.group();
@@ -128,12 +138,12 @@ export default class LevelsCommon extends Phaser.State {
 
       this.game.slopes.enable(this.player)
       this.player.body.slopes.preferY = true;
-
-      this.player.body.drag.x = 1200;
       this.player.body.bounce.x = 0;
       this.player.body.bounce.y = 0;
       this.player.body.slopes.friction.x = 0;
       this.player.body.slopes.friction.y = 0; 
+      
+
 
   }
 
@@ -158,7 +168,7 @@ export default class LevelsCommon extends Phaser.State {
         this.debugGate = this.game.time.now + 500
       }
     }
-
+    // console.log(this.player)
   }
 
   render() {

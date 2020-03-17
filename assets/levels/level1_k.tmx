@@ -46,15 +46,15 @@
 </data>
  </layer>
  <objectgroup id="2" name="Player">
-  <object id="1" name="fox" x="11584.7" y="2687.67">
+  <object id="1" name="fox" x="11587.4" y="2686.34">
    <point/>
   </object>
  </objectgroup>
  <objectgroup id="6" name="Enemies">
-  <object id="8" name="mouse" x="10444" y="2680">
+  <object id="8" name="mouse" x="11862.7" y="2682.67">
    <point/>
   </object>
-  <object id="9" name="mouse" x="11720" y="3429.33">
+  <object id="9" name="mouse" x="11721.3" y="3454.66">
    <point/>
   </object>
  </objectgroup>
